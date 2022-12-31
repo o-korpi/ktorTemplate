@@ -1,6 +1,7 @@
 package com.korpi.web.security
 
-import com.korpi.adapters.secondary.RedisCache
+import com.korpi.adapters.secondary.DeviceCookieStorage
+import com.korpi.config.AuthConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
 import java.util.*
@@ -9,10 +10,10 @@ import java.util.*
 
 fun ApplicationCall.createDeviceCookie() {
     val uuid = UUID.randomUUID()
-    RedisCache.addDevice(uuid)
+    DeviceCookieStorage.addDevice(uuid)
     response.cookies.append(
         Cookie(
-            "device",
+            AuthConfig.deviceCookieName,
             uuid.toString()
         )
     )

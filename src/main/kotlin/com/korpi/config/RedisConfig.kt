@@ -9,6 +9,8 @@ object RedisConfig {
     object Schema {
         const val session = "session"
         const val device = "device"
-        const val deviceCookiesEnabled = "deviceCookiesEnabled"
+        const val deviceCookiesEnabled = "device_cookies_enabled"
+        const val authenticationFailures = "auth_failures"
+        const val lockout = "locked_out_devices"
     }
 }

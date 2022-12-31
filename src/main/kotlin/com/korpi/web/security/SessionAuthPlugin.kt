@@ -19,7 +19,17 @@ val SessionAuthPlugin = createRouteScopedPlugin(name = "SessionAuthPlugin") {
         val onAuthFailureDestination = config.loginPath
 
         suspend fun challenge() { // Todo: Extract this into some sort of configuration
-            call.response.cookies.append("target", call.request.uri, maxAge = 600L) // Todo: extract Ttl
+            // Log failed authentications
+            AuthConfig.authFailureStorage.addAuthFailure(
+                call.receive<UserCredentials>().email,
+                Date(),
+                call.request.cookies[AuthConfig.deviceCookieName]
+            )
+
+            // Add redirect to requested path cookie on auth failure if we are not trying to login already
+            if (call.request.uri != config.loginPath)
+                call.response.cookies.append("target", call.request.uri, maxAge = 600L) // Todo: extract Ttl
+
             call.respondRedirect(onAuthFailureDestination)
         }
 

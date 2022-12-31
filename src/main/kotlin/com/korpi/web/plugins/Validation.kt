@@ -1,4 +1,4 @@
-package com.korpi.web.validation
+package com.korpi.web.plugins
 
 import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.validation.email

@@ -32,6 +32,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-server-request-validation:$ktorVersion")
     implementation("io.ktor:ktor-server-rate-limit:$ktorVersion")
+    implementation("io.ktor:ktor-server-double-receive:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("redis.clients:jedis:$jedisVersion")
 
@@ -43,6 +44,7 @@ dependencies {
 
     implementation("at.favre.lib:bcrypt:0.9.0")
     implementation("io.ktor:ktor-server-pebble-jvm:2.2.1")
+    implementation("io.ktor:ktor-server-double-receive-jvm:2.2.1")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")

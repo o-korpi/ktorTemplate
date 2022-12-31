@@ -11,9 +11,9 @@ val DeviceCookiesPlugin = createApplicationPlugin(name = "DeviceCookiesPlugin") 
     AuthConfig.deviceCookiesInstalled = true
 
     onCall {
-        if (CacheConfig.cache.deviceCookiesEnabled()) {
-            if (!CacheConfig.cache.deviceExists(
-                it.request.cookies["device"] ?: return@onCall it.respond(HttpStatusCode.Unauthorized)
+        if (CacheConfig.deviceCookieStorage.deviceCookiesEnabled()) {
+            if (!CacheConfig.deviceCookieStorage.deviceExists(
+                it.request.cookies[AuthConfig.deviceCookieName] ?: return@onCall it.respond(HttpStatusCode.Unauthorized)
             )) {
                 return@onCall it.respond(HttpStatusCode.Unauthorized)
             }

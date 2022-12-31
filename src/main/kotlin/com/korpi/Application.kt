@@ -4,8 +4,8 @@ import com.korpi.adapters.primary.routes.routing
 import com.korpi.adapters.primary.routes.static
 import com.korpi.config.DatabaseConfig
 import com.korpi.web.cookies
+import com.korpi.web.plugins.validation
 import com.korpi.web.security.DeviceCookiesPlugin
-import com.korpi.web.validation.validation
 import com.mitchellbosecke.pebble.loader.ClasspathLoader
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -13,6 +13,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.doublereceive.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.request.*
 import org.jetbrains.exposed.sql.Database
@@ -33,6 +34,7 @@ fun Application.module() {
     install(Pebble) {
         loader(ClasspathLoader())
     }
+    install(DoubleReceive)
     install(ContentNegotiation) { json() }
     install(DeviceCookiesPlugin)
 

@@ -1,7 +1,7 @@
 package com.korpi.config
 
-import com.korpi.adapters.secondary.RedisCache
+import com.korpi.adapters.secondary.DeviceCookieStorage
 
 object CacheConfig {
-    val cache = RedisCache
+    val deviceCookieStorage = DeviceCookieStorage
 }

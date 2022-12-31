@@ -1,9 +1,11 @@
 package com.korpi.adapters.primary.routes.auth
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.korpi.config.AuthConfig
 import com.korpi.config.SessionConfig
 import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.UserService
+import com.korpi.web.security.createDeviceCookie
 import io.ktor.http.*
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
@@ -26,7 +28,7 @@ fun Route.login() {
                 val userId = UserService.findByEmail(userCredentials.email)!!.id
                 SessionConfig.sessionStorage.write(userId, uuid)
                 call.response.cookies.append(Cookie("session", uuid.toString()))
-                println("Logged in as user $userId")
+                if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie(userId)
                 call.respondRedirect("/profile")
             }
             LoginStatus.USER_NOT_FOUND, LoginStatus.INCORRECT_PASSWORD -> {

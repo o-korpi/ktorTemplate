@@ -1,7 +1,6 @@
 package com.korpi.web
 
 import com.korpi.config.SessionConfig
-import com.korpi.domain.ports.dto.Invalidate
 import com.korpi.domain.ports.dto.UserSession
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
@@ -15,5 +14,9 @@ fun Application.cookies() {
             cookie.extensions["SameSite"] = "lax"
         }
 
+        cookie<UserSession>("device") {
+            cookie.path = "/"
+            cookie.extensions["SameSite"] = "lax"
+        }
     }
 }

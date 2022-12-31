@@ -8,5 +8,7 @@ object RedisConfig {
     val port = Port(6379)
     object Schema {
         const val session = "session"
+        const val device = "device"
+        const val deviceCookiesEnabled = "deviceCookiesEnabled"
     }
 }

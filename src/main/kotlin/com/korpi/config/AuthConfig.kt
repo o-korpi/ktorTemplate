@@ -1,5 +1,6 @@
 package com.korpi.config
 
 object AuthConfig {
-    val loginPath: String = "/login"
+    var deviceCookiesInstalled: Boolean = false  // do not manually edit
+    const val loginPath: String = "/login"
 }

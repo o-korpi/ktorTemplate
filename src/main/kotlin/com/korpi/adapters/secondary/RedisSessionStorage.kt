@@ -2,15 +2,13 @@ package com.korpi.adapters.secondary
 
 import com.korpi.config.RedisConfig
 import com.korpi.config.SessionConfig
-import com.korpi.domain.ports.dto.UserId
 import com.korpi.domain.ports.SessionStorage
-import redis.clients.jedis.JedisPooled
+import com.korpi.domain.ports.dto.UserId
 import redis.clients.jedis.params.SetParams
 import java.util.*
 
-class RedisSessionStorage : SessionStorage {
+class RedisSessionStorage : SessionStorage, RedisPersistence() {
     private val keyPrefix: String = RedisConfig.Schema.session
-    private val jedis = JedisPooled(RedisConfig.host.value, RedisConfig.port.value)
     private val ttl: Long = SessionConfig.sessionTtl
 
     private fun key(sessionId: UUID): String = "$keyPrefix:$sessionId"

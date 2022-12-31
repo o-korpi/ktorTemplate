@@ -1,19 +1,15 @@
 package com.korpi.adapters.primary.routes.auth
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import com.korpi.config.AuthConfig
-import com.korpi.config.SessionConfig
 import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.UserService
-import com.korpi.web.CookieFactory
 import com.korpi.web.plugins.respondPebbleNested
-import com.korpi.web.security.createDeviceCookie
+import com.korpi.web.security.SessionAuth
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.util.*
 
 fun Route.login() {
 
@@ -27,20 +23,12 @@ fun Route.login() {
 
         when(login(userCredentials).also { println("Login status: $it") }) {
             LoginStatus.OK -> {
-                // Session management
-                val uuid: UUID = UUID.randomUUID()
-                val userId = UserService.findByEmail(userCredentials.email)!!.id
-                SessionConfig.sessionStorage.write(userId, uuid)
-                call.response.cookies.append(CookieFactory.sessionCookie(uuid))
-
-                // Give the user a device cookie
-                if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie()
+                SessionAuth.saveSession(call, userCredentials)
 
                 // Check if the user has a target destination, if so redirect there, else default redirect route
-                val defaultPath = "/profile" // Todo: Extract
+                val defaultPath = "/profile" // Todo: Extract?
                 val targetPath: String? = call.request.cookies["target"]
                 if (targetPath != null) {
-                    println("Redirect to $targetPath")
                     call.respondRedirect(targetPath)
                 } else {
                     call.respondRedirect(defaultPath)

@@ -22,8 +22,6 @@ fun main() {
     println("Starting")
     Database.connect(DatabaseConfig.db.connect())
     println("Database initialized")
-    println(System.getProperty("java.class.path").split(":").map { it + "\n" })
-
 
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)

@@ -16,7 +16,7 @@ object CookieFactory {
         extensions = mapOf("SameSite" to "lax")
     )
 
-    fun sessionCookie(sessionId: String) = standardCookie("session", sessionId, SessionConfig.sessionTtl.toInt())
+    fun sessionCookie(sessionId: String) = standardCookie(SessionConfig.cookieName, sessionId, SessionConfig.sessionTtl.toInt())
     fun sessionCookie(sessionId: UUID) = sessionCookie(sessionId.toString())
 
     /** Returns a cookie that will be removed */

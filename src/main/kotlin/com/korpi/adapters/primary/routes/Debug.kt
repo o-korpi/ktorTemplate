@@ -1,7 +1,7 @@
 package com.korpi.adapters.primary.routes
 
 import com.korpi.domain.ports.dto.UserSession
-import com.korpi.web.security.CookieAuthPlugin
+import com.korpi.web.security.SessionAuthPlugin
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.pebble.*
@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 
 fun Route.debug() {
     route("/debug") {
-        install(CookieAuthPlugin)
+        install(SessionAuthPlugin)
         get {
             call.respondText("""
                 cookies: ${call.request.cookies.rawCookies}
@@ -20,7 +20,7 @@ fun Route.debug() {
     }
 
     route("/profile") {
-        install(CookieAuthPlugin)
+        install(SessionAuthPlugin)
         get {
             call.response.cookies.append("hello", "world")
             call.respondText("logged in as $")

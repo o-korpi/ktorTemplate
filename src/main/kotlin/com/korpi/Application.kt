@@ -1,6 +1,7 @@
 package com.korpi
 
 import com.korpi.adapters.primary.routes.routing
+import com.korpi.adapters.primary.routes.static
 import com.korpi.config.DatabaseConfig
 import com.korpi.web.cookies
 import com.korpi.web.security.DeviceCookiesPlugin
@@ -62,5 +63,6 @@ fun Application.module() {
 
 
     routing()
+    static()
 }
 

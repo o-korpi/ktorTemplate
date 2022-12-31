@@ -9,6 +9,8 @@ import io.ktor.server.netty.*
 import com.korpi.web.validation.validation
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.ratelimit.*
+import kotlin.time.Duration.Companion.seconds
 
 fun main() {
     DatabaseConfig
@@ -34,5 +36,14 @@ fun Application.module() {
     cookies()
 
     routing()
+
+    val rateLimitFlag = false
+
+    install(RateLimit) {
+        global { if (rateLimitFlag) rateLimiter(limit = 10000, refillPeriod = 30.seconds) }
+        register(RateLimitName("protected")) {
+            if (rateLimitFlag) rateLimiter(limit = 1000, refillPeriod = 60.seconds)
+        }
+    }
 }
 

@@ -1,12 +1,15 @@
 package com.korpi.adapters.primary.routes.auth
 
+import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
 
 
 fun Route.authRoutes() {
     route("") {
-        login()
-        register()
-        logout()
+        rateLimit {
+            login()
+            register()
+            logout()
+        }
     }
 }

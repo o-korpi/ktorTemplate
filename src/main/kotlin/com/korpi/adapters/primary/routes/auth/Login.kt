@@ -7,10 +7,9 @@ import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.UserService
 import com.korpi.web.security.createDeviceCookie
 import io.ktor.http.*
-import io.ktor.server.routing.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
-import io.ktor.http.HttpStatusCode
+import io.ktor.server.routing.*
 import java.util.*
 
 fun Route.login() {
@@ -28,7 +27,7 @@ fun Route.login() {
                 val userId = UserService.findByEmail(userCredentials.email)!!.id
                 SessionConfig.sessionStorage.write(userId, uuid)
                 call.response.cookies.append(Cookie("session", uuid.toString()))
-                if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie(userId)
+                if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie()
                 call.respondRedirect("/profile")
             }
             LoginStatus.USER_NOT_FOUND, LoginStatus.INCORRECT_PASSWORD -> {

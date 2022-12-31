@@ -14,9 +14,5 @@ fun Application.cookies() {
             cookie.extensions["SameSite"] = "lax"
         }
 
-        cookie<UserSession>("device") {
-            cookie.path = "/"
-            cookie.extensions["SameSite"] = "lax"
-        }
     }
 }

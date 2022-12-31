@@ -4,11 +4,11 @@ import com.korpi.adapters.primary.routes.routing
 import com.korpi.config.DatabaseConfig
 import com.korpi.web.cookies
 import com.korpi.web.security.DeviceCookiesPlugin
+import com.korpi.web.validation.validation
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import com.korpi.web.validation.validation
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.ratelimit.*
 import kotlin.time.Duration.Companion.seconds
@@ -36,16 +36,18 @@ fun Application.module() {
     validation()
 
     cookies()
-    routing()
 
-    val rateLimitGlobal = false
-    val rateLimitProtected = true
+    val rateLimit = true
 
-    install(RateLimit) {
-        global { if (rateLimitGlobal) rateLimiter(limit = 10000, refillPeriod = 30.seconds) }
-        register(RateLimitName("protected")) {
-            if (rateLimitProtected) rateLimiter(limit = 100, refillPeriod = 60.seconds)
+    if (rateLimit) {
+        install(RateLimit) {
+            register(RateLimitName("protected")) {
+                rateLimiter(limit = 100, refillPeriod = 60.seconds)
+            }
         }
     }
+
+
+    routing()
 }
 

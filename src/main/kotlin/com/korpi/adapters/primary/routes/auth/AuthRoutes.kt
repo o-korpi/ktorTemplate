@@ -6,7 +6,7 @@ import io.ktor.server.routing.*
 
 fun Route.authRoutes() {
     route("") {
-        rateLimit {
+        rateLimit(RateLimitName("protected")) {
             login()
             register()
             logout()

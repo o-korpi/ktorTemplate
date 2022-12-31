@@ -9,7 +9,7 @@ import java.util.*
 
 
 
-suspend fun ApplicationCall.createDeviceCookie(userId: Long) {
+fun ApplicationCall.createDeviceCookie(userId: Long) {
     val uuid = UUID.randomUUID()
     RedisCache.write(
         RedisCache.createKey(RedisConfig.Schema.device, uuid.toString()),
@@ -23,7 +23,7 @@ suspend fun ApplicationCall.createDeviceCookie(userId: Long) {
     )
 }
 
-suspend fun ApplicationCall.createDeviceCookie(userId: UserId) {
+fun ApplicationCall.createDeviceCookie(userId: UserId) {
     createDeviceCookie(userId.value)
 }
 

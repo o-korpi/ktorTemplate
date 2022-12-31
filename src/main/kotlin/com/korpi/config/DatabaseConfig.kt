@@ -8,9 +8,9 @@ import com.korpi.domain.ports.dto.Port
 object DatabaseConfig {
     val host: Host = Host("localhost")
     val port: Port = Port(5432)
-    val name: String = "ktortestdb"
-    const val user: String = "" // TODO: env variable
-    const val pass: String = "" // TODO: env variable
+    const val name: String = "ktortestdb"
+    val user: String = System.getenv("DB_USER")
+    val pass: String = System.getenv("DB_PASS")
     val db: Persistence = PostgresPersistence  // Important: Must be below all other variables
 
 }

@@ -5,9 +5,11 @@ import com.korpi.config.AuthConfig
 import com.korpi.config.SessionConfig
 import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.UserService
+import com.korpi.web.plugins.respondPebbleNested
 import com.korpi.web.security.createDeviceCookie
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.*
@@ -15,18 +17,19 @@ import java.util.*
 fun Route.login() {
 
     get("/login") {
-        call.respondText("Login page")
+        println(call.request.uri)
+        call.respondPebbleNested("auth/login.html")
     }
 
     post("/login") {
         val userCredentials = call.getUserCredentials() ?: return@post
 
-        when(login(userCredentials).also { println("Login status: ${it::class.simpleName}") }) {
+        when(login(userCredentials).also { println("Login status: $it") }) {
             LoginStatus.OK -> {
                 val uuid: UUID = UUID.randomUUID()
                 val userId = UserService.findByEmail(userCredentials.email)!!.id
                 SessionConfig.sessionStorage.write(userId, uuid)
-                call.response.cookies.append(Cookie("session", uuid.toString()))
+                call.response.cookies.append(Cookie("session", uuid.toString(), maxAge = SessionConfig.sessionTtl.toInt()))
                 if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie()
                 call.respondRedirect("/profile")
             }

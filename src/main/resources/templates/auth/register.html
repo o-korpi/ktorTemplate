@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<p>Register page</p>
+<button onclick="function login() {
+    fetch('register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            email: 'timothy@gmail.com',
+            password: 'hunter25'
+        })
+    }).then(res => {
+        console.log('Request complete! ', res)
+    });
+}
+login()">Register</button>
+</body>
+</html>

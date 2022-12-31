@@ -2,6 +2,7 @@ package com.korpi.adapters.primary.routes.auth
 
 import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.UserService
+import com.korpi.web.plugins.respondPebbleNested
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -10,7 +11,7 @@ import io.ktor.server.routing.*
 internal fun Route.register() {
     route("/register") {
         get {
-            call.respondText { "register page" }
+            call.respondPebbleNested("auth/register.html")
         }
 
         post {

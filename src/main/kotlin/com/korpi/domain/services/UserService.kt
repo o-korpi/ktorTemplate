@@ -5,7 +5,6 @@ import com.korpi.config.DatabaseConfig
 import com.korpi.domain.models.User
 import com.korpi.domain.ports.dto.longPair
 import com.korpi.domain.ports.dto.varcharPair
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.ResultSet
 
@@ -25,8 +24,7 @@ object UserService : CrudService<User> {
 
     fun create(email: String, rawPassword: String): User? {
         val password = BCrypt.withDefaults().hashToString(12, rawPassword.toCharArray())
-        val connection = Database.connect(database.connect())
-        transaction(connection) {
+        transaction {
             database.insert(
                 "INSERT INTO users (email, password) VALUES (?, ?)",
                 varcharPair(email),
@@ -34,7 +32,7 @@ object UserService : CrudService<User> {
             )
         }
 
-        return transaction(connection) {
+        return transaction {
             database.read(
                 "SELECT * FROM users WHERE email=?",
                 varcharPair(email)
@@ -45,18 +43,20 @@ object UserService : CrudService<User> {
     }
 
     fun findByEmail(email: String): User? {
-        return transaction(Database.connect(database.connect())) {
-            database.read(
+        var r: User? = null
+        transaction {
+            r = database.read(
                 "SELECT * FROM users WHERE email=?",
                 varcharPair(email)
             ) { rs ->
                 parseUserResult(rs)
             }.firstOrNull()
         }
+        return r
     }
 
     fun findById(userId: Long): User? {
-        return transaction(Database.connect(database.connect())) {
+        return transaction {
             database.read(
                 "SELECT * FROM users WHERE user_id=?",
                 longPair(userId)

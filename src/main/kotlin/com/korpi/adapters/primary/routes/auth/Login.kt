@@ -26,12 +26,24 @@ fun Route.login() {
 
         when(login(userCredentials).also { println("Login status: $it") }) {
             LoginStatus.OK -> {
+                // Session management
                 val uuid: UUID = UUID.randomUUID()
                 val userId = UserService.findByEmail(userCredentials.email)!!.id
                 SessionConfig.sessionStorage.write(userId, uuid)
                 call.response.cookies.append(Cookie("session", uuid.toString(), maxAge = SessionConfig.sessionTtl.toInt()))
+
+                // Give the user a device cookie
                 if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie()
-                call.respondRedirect("/profile")
+
+                // Check if the user has a target destination, if so redirect there, else default redirect route
+                val defaultPath = "/profile" // Todo: Extract
+                val targetPath: String? = call.request.cookies["target"]
+                if (targetPath != null) {
+                    println("Redirect to $targetPath")
+                    call.respondRedirect(targetPath)
+                } else {
+                    call.respondRedirect(defaultPath)
+                }
             }
             LoginStatus.USER_NOT_FOUND, LoginStatus.INCORRECT_PASSWORD -> {
                 call.respond(HttpStatusCode.Unauthorized)

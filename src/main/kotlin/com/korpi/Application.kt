@@ -13,6 +13,7 @@ import io.ktor.server.netty.*
 import io.ktor.server.pebble.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.ratelimit.*
+import io.ktor.server.request.*
 import org.jetbrains.exposed.sql.Database
 import kotlin.time.Duration.Companion.seconds
 
@@ -46,7 +47,15 @@ fun Application.module() {
     if (rateLimit) {
         install(RateLimit) {
             register(RateLimitName("protected")) {
-                rateLimiter(limit = 100, refillPeriod = 60.seconds)
+                requestKey {
+
+                }
+                requestWeight { call, _ ->
+                    if (call.request.uri.contains("login")) {
+                        10
+                    } else 1
+                }
+                rateLimiter(limit = 500, refillPeriod = 60.seconds)
             }
         }
     }

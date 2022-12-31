@@ -8,4 +8,6 @@ interface SessionStorage {
     suspend fun read(sessionId: UUID): UserId?
     suspend fun exists(sessionId: UUID): Boolean
     suspend fun invalidate(sessionId: UUID)
+    suspend fun extend(sessionId: UUID)
+    suspend fun extend(sessionId: String)
 }

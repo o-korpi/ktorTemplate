@@ -5,6 +5,7 @@ import com.korpi.config.AuthConfig
 import com.korpi.config.SessionConfig
 import com.korpi.domain.models.UserCredentials
 import com.korpi.domain.services.UserService
+import com.korpi.web.CookieFactory
 import com.korpi.web.plugins.respondPebbleNested
 import com.korpi.web.security.createDeviceCookie
 import io.ktor.http.*
@@ -30,7 +31,7 @@ fun Route.login() {
                 val uuid: UUID = UUID.randomUUID()
                 val userId = UserService.findByEmail(userCredentials.email)!!.id
                 SessionConfig.sessionStorage.write(userId, uuid)
-                call.response.cookies.append(Cookie("session", uuid.toString(), maxAge = SessionConfig.sessionTtl.toInt()))
+                call.response.cookies.append(CookieFactory.sessionCookie(uuid))
 
                 // Give the user a device cookie
                 if (AuthConfig.deviceCookiesInstalled) call.createDeviceCookie()

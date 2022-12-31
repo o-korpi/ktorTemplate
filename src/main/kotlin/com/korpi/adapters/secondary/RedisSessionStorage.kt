@@ -12,6 +12,7 @@ class RedisSessionStorage : SessionStorage, RedisPersistence() {
     private val ttl: Long = SessionConfig.sessionTtl
 
     private fun key(sessionId: UUID): String = "$keyPrefix:$sessionId"
+    private fun key(sessionId: String) = "$keyPrefix:$sessionId"
 
     override suspend fun write(userId: Long, sessionId: UUID) {
         jedis.set(key(sessionId), userId.toString(), SetParams().ex(ttl))
@@ -29,5 +30,14 @@ class RedisSessionStorage : SessionStorage, RedisPersistence() {
 
     override suspend fun invalidate(sessionId: UUID) {
         jedis.del(key(sessionId))
+    }
+
+    /** Extend the TTL of a session */
+    override suspend fun extend(sessionId: UUID) {
+        jedis.expire(key(sessionId), ttl)
+    }
+
+    override suspend fun extend(sessionId: String) {
+        jedis.expire(key(sessionId), ttl)
     }
 }

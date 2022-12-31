@@ -6,8 +6,6 @@ import java.util.*
 object RedisCache : RedisPersistence() {
     fun deviceCookiesEnabled(): Boolean = jedis.exists(RedisConfig.Schema.deviceCookiesEnabled)
 
-    fun createKey(vararg strings: String) = strings.joinToString("")
-
     fun <T> write(key: String, value: T) {
         jedis.set(key, value.toString())
     }
@@ -23,7 +21,7 @@ object RedisCache : RedisPersistence() {
     }
 
     fun deviceExists(deviceId: String): Boolean {
-        return jedis.sismember(RedisConfig.Schema.device, deviceId.toString())
+        return jedis.sismember(RedisConfig.Schema.device, deviceId)
     }
 
     fun addDevice(deviceId: UUID) {

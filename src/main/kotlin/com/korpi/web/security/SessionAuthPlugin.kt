@@ -26,7 +26,7 @@ val SessionAuthPlugin = createRouteScopedPlugin(name = "SessionAuthPlugin") {
                 call.request.cookies[AuthConfig.deviceCookieName]
             )
 
-            // Add redirect to requested path cookie on auth failure if we are not trying to login already
+            // Add redirect to requested path cookie on auth failure if we are not trying to log in already
             if (call.request.uri != config.loginPath)
                 call.response.cookies.append("target", call.request.uri, maxAge = 600L) // Todo: extract Ttl
 

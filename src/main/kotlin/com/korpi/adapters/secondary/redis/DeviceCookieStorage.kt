@@ -1,4 +1,4 @@
-package com.korpi.adapters.secondary
+package com.korpi.adapters.secondary.redis
 
 import com.korpi.config.RedisConfig
 import java.util.*

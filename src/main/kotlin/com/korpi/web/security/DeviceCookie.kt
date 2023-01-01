@@ -1,6 +1,6 @@
 package com.korpi.web.security
 
-import com.korpi.adapters.secondary.DeviceCookieStorage
+import com.korpi.adapters.secondary.redis.DeviceCookieStorage
 import com.korpi.config.AuthConfig
 import io.ktor.http.*
 import io.ktor.server.application.*

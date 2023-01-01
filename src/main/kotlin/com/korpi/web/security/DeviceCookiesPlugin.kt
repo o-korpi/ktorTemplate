@@ -20,4 +20,3 @@ val DeviceCookiesPlugin = createApplicationPlugin(name = "DeviceCookiesPlugin") 
         }
     }
 }
-

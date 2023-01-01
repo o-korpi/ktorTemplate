@@ -45,6 +45,8 @@ dependencies {
     implementation("at.favre.lib:bcrypt:0.9.0")
     implementation("io.ktor:ktor-server-pebble-jvm:2.2.1")
     implementation("io.ktor:ktor-server-double-receive-jvm:2.2.1")
+    implementation("io.ktor:ktor-server-host-common-jvm:2.2.1")
+    implementation("io.ktor:ktor-server-status-pages-jvm:2.2.1")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")

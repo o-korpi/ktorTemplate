@@ -2,6 +2,7 @@ package com.korpi
 
 import com.korpi.adapters.primary.routes.routing
 import com.korpi.adapters.primary.routes.static
+import com.korpi.adapters.primary.routes.statusPageRouting
 import com.korpi.config.DatabaseConfig
 import com.korpi.web.cookies
 import com.korpi.web.plugins.validation
@@ -63,6 +64,7 @@ fun Application.module() {
 
 
     routing()
+    statusPageRouting()
     static()
 }
 
